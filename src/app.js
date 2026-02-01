@@ -33,6 +33,23 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', categoryRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to Home Baker Marketplace API',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/api/auth',
+      baker: '/api/baker',
+      user: '/api/user',
+      admin: '/api/admin',
+      payment: '/api/payment',
+      categories: '/api/categories',
+      health: '/health'
+    }
+  });
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
