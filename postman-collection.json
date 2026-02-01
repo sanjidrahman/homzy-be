@@ -1,0 +1,562 @@
+{
+  "info": {
+    "name": "Home Baker Marketplace API",
+    "description": "Complete API collection for Home Baker Marketplace Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "baker_token",
+      "value": ""
+    },
+    {
+      "key": "user_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "User Signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\",\n  \"address\": {\n    \"street\": \"123 Street\",\n    \"city\": \"Mumbai\",\n    \"state\": \"Maharashtra\",\n    \"pincode\": \"400001\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@bakery.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login - User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rahul@example.com\",\n  \"password\": \"user123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/profile",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Baker Registration",
+      "item": [
+        {
+          "name": "Step 1 - Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Baker\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543299\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/baker/signup/step1",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "signup", "step1"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/baker/verify-otp",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "Step 2 - Complete Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "bakery_name", "value": "Sweet Treats Bakery", "type": "text" },
+                { "key": "city", "value": "Mumbai", "type": "text" },
+                { "key": "state", "value": "Maharashtra", "type": "text" },
+                { "key": "pincode", "value": "400001", "type": "text" },
+                { "key": "id_proof_type", "value": "aadhar", "type": "text" },
+                { "key": "id_proof_number", "value": "1234-5678-9012", "type": "text" },
+                { "key": "fssai_number", "value": "1234567890", "type": "text" },
+                { "key": "food_safety_declaration", "value": "true", "type": "text" },
+                { "key": "payment_method", "value": "upi", "type": "text" },
+                { "key": "upi_id", "value": "jane@upi", "type": "text" },
+                { "key": "item_types", "value": "[\"cakes\", \"cookies\"]", "type": "text" },
+                { "key": "is_veg", "value": "true", "type": "text" },
+                { "key": "is_nonveg", "value": "false", "type": "text" },
+                { "key": "has_eggless_option", "value": "true", "type": "text" },
+                { "key": "terms_accepted", "value": "true", "type": "text" },
+                { "key": "profile_photo", "type": "file", "src": [] },
+                { "key": "id_proof_document", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/baker/profile/complete",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "profile", "complete"]
+            }
+          }
+        },
+        {
+          "name": "Check Verification Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/baker/verification-status",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "verification-status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User (Customer) APIs",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/products",
+              "host": ["{{base_url}}"],
+              "path": ["user", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/products/:id",
+              "host": ["{{base_url}}"],
+              "path": ["user", "products", ":id"],
+              "variable": [
+                { "key": "id", "value": "prod-001-uuid-sample" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Bakers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/bakers",
+              "host": ["{{base_url}}"],
+              "path": ["user", "bakers"]
+            }
+          }
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/products/:id/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["user", "products", ":id", "reviews"],
+              "variable": [
+                { "key": "id", "value": "prod-001-uuid-sample" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"prod-001-uuid-sample\",\n  \"rating\": 5,\n  \"comment\": \"Amazing product!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/reviews",
+              "host": ["{{base_url}}"],
+              "path": ["user", "reviews"]
+            }
+          }
+        },
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"product_id\": \"prod-001-uuid-sample\",\n      \"quantity\": 1,\n      \"price\": 550,\n      \"baker_id\": \"baker-001-uuid-sample\"\n    }\n  ],\n  \"total_amount\": 550,\n  \"delivery_address\": {\n    \"street\": \"123 Street\",\n    \"city\": \"Mumbai\",\n    \"state\": \"Maharashtra\",\n    \"pincode\": \"400001\"\n  },\n  \"payment_id\": \"pi_test_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/orders",
+              "host": ["{{base_url}}"],
+              "path": ["user", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get User Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/orders",
+              "host": ["{{base_url}}"],
+              "path": ["user", "orders"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Baker APIs",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Chocolate Cake", "type": "text" },
+                { "key": "description", "value": "Delicious chocolate cake", "type": "text" },
+                { "key": "price", "value": "500", "type": "text" },
+                { "key": "category_id", "value": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p", "type": "text" },
+                { "key": "image", "type": "file", "src": [] }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/baker/products",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Baker Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/baker/products",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Baker Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/baker/orders",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Baker Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{baker_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/baker/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["baker", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin APIs",
+      "item": [
+        {
+          "name": "Get Pending Bakers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/bakers/pending",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "bakers", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Approve Baker",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/bakers/:id/approve",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "bakers", ":id", "approve"],
+              "variable": [
+                { "key": "id", "value": "baker-id-here" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reject Baker",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rejection_reason\": \"Documents not clear\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/bakers/:id/reject",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "bakers", ":id", "reject"],
+              "variable": [
+                { "key": "id", "value": "baker-id-here" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"]
+            }
+          }
+        },
+        {
+          "name": "Block/Unblock User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"blocked\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/:id/status",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", ":id", "status"],
+              "variable": [
+                { "key": "id", "value": "user-id-here" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment APIs",
+      "item": [
+        {
+          "name": "Create Payment Intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payment/create-intent",
+              "host": ["{{base_url}}"],
+              "path": ["payment", "create-intent"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_intent_id\": \"pi_test_123\",\n  \"order_id\": \"order-id-here\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payment/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["payment", "confirm"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
